@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <h1>EcoVerse</h1>
+        <div>
+            <a href="#">Home</a>
+            <a href="{{ url_for('model_home_view') }}">Models</a>
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('logout_view') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login_view') }}">Login</a>
+                <a href="{{ url_for('register_view') }}">Register</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="welcome">
+            <h2>Welcome to EcoVerse!</h2>
+            <p>Discover, share, and connect with fellow activists around the world.</p>
+        </div>
+        {% if current_user.is_authenticated %}
+        <p>Welcome, {{ current_user.username }}!</p>
+        {% endif %}
+        <p><a class="button" href="{{ url_for('post_view') }}">Write a Post!</a></p>
+        <h2>Public Posts</h2>
+        
+
+        <div class="blog-list">
+            {% if posts|length == 0 %}
+            <p>No posts yet</p>
+            {% else %}
+            {% for post in posts %}
+            <div class="blog-card">
+                <h3>{{ post.title }}</h3>
+                <p>By {{ post.userid.username }} | Posted on {{ post.timestamp }}</p>
+                <br>
+                <p>{{ post.content }}</p>
+                <a class="button" href="#">Comment</a>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="stats">
+            <div>
+                <h3>{{ posts|length }}+</h3>
+                <p>Posts</p>
+            </div>
+            <div>
+                <h3>{{ users|length }}+</h3>
+                <p>Active Users</p>
+            </div>
+        </div>
+        
+
+        
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 EcoVerse. All rights reserved. <a href="#">Contact Us</a></p>
+    </div>
+</body>
+</html>

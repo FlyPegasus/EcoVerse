@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>{{ current_user.username }}'s Blogs</h1>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    <form action="" method="post">
+        {{ form.hidden_tag() }} <br>
+        <div>
+            {{ form.title.label }}
+            {{ form.title }}
+            {% if form.title.errors %}
+                {% for error in form.title.errors %}
+                <div>{{ error }}</div>
+                {% endfor %}
+            {% endif %}
+        </div><br>
+        <div>
+            {{ form.content.label }}
+            {{ form.content }}
+            {% if form.content.errors %}
+                {% for error in form.content.errors %}
+                <div>{{ error }}</div>
+                {% endfor %}
+            {% endif %}
+        </div><br>
+        <div>
+            {{ form.submit() }}
+        </div>
+
+        <div><h2>Old Posts</h2></div>
+        <ul>
+            {% for post in posts %}
+                <li>
+                    <div>{{ post.title }}</div>
+                    <div>{{ post.content }}</div>
+                    
+                    
+                </li>
+            {% endfor %}
+        </ul>
+    </form>
+{% endblock content %}
