@@ -40,6 +40,11 @@
                 {% endfor %}
             {% endif %}
         </div><br>
+        <!-- Location code -->
+        <div>
+            <input type="hidden" id="latitude" name="latitude">
+            <input type="hidden" id="longitude" name="longitude">
+        </div><br>
         <div>
             {{ form.submit() }}
         </div>
@@ -56,4 +61,16 @@
             {% endfor %}
         </ul>
     </form>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    document.getElementById('latitude').value = position.coords.latitude;
+                    document.getElementById('longitude').value = position.coords.longitude;
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        });
+    </script>
 {% endblock content %}

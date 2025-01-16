@@ -34,6 +34,9 @@ def post_view():
         p_post.title = form.title.data
         p_post.content = form.content.data
         p_post.image = form.image.data.read()
+        latitude = request.form.get('latitude')
+        longitude = request.form.get('longitude')
+        p_post.location = latitude + longitude  # location code needs changes
         p_post.userid = current_user.id  # Link the blog post to the current user
         db.session.add(p_post)
         db.session.commit()

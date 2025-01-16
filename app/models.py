@@ -63,11 +63,12 @@ class Post(db.Model):
     content = db.Column(db.String(10000))
     image = db.Column(db.LargeBinary)
     timestamp = db.Column(db.DateTime, default=datetime.now)
+    location = db.Column(db.String(100))
     userid = db.Column(db.Integer, db.ForeignKey('user.id'))
     comments = db.relationship('Comment', backref='post', lazy=True)
 
     def __repr__(self):
-        return "<Post {}>".format(self.title)
+        return "<Post {}>".format(self.location)
 
 
 class Comment(db.Model):
