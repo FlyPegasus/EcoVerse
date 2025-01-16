@@ -11,13 +11,22 @@
     </ul>
     {% endif %}
     {% endwith %}
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }} <br>
         <div>
             {{ form.title.label }}
             {{ form.title }}
             {% if form.title.errors %}
                 {% for error in form.title.errors %}
+                <div>{{ error }}</div>
+                {% endfor %}
+            {% endif %}
+        </div><br>
+        <div>
+            {{ form.image.label }}
+            {{ form.image }}
+            {% if form.image.errors %}
+                {% for error in form.image.errors %}
                 <div>{{ error }}</div>
                 {% endfor %}
             {% endif %}

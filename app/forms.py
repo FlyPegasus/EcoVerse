@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, EmailField
+from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms.validators import DataRequired, Email
 
 # class LoginForm(FlaskForm):
@@ -26,4 +27,6 @@ class SignUpForm(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField('title', validators=[DataRequired()])
     content = StringField('content', validators=[DataRequired()])
+    image = FileField('Image', validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!'), FileRequired(
+        'File was empty!')])
     submit = SubmitField('Post')

@@ -33,12 +33,14 @@ def post_view():
         p_post = Post()
         p_post.title = form.title.data
         p_post.content = form.content.data
+        p_post.image = form.image.data.read()
         p_post.userid = current_user.id  # Link the blog post to the current user
         db.session.add(p_post)
         db.session.commit()
         flash('New post added!', 'success')
         posts = current_user.posts
-        return redirect(url_for('post_view'))
+        # return redirect(url_for('post_view'))
+        return render_template('post.html', posts=posts, form=form)
     posts = current_user.posts
     return render_template('post.html', posts=posts, form=form)
 
