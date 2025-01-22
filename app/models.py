@@ -62,8 +62,10 @@ class Post(db.Model):
     title = db.Column(db.String(100))
     content = db.Column(db.String(10000))
     image = db.Column(db.LargeBinary)
+    analysed_img = db.Column(db.LargeBinary)
     timestamp = db.Column(db.DateTime, default=datetime.now)
     location = db.Column(db.String(100))
+    pollution_percent = db.Column(db.Float)
     userid = db.Column(db.Integer, db.ForeignKey('user.id'))
     comments = db.relationship('Comment', backref='post', lazy=True)
 

@@ -12,7 +12,7 @@ class Config(object):
 
     UPLOAD_FOLDER = 'uploads/'
     PROCESSED_FOLDER = 'processed/'
-    ALLOWED_EXTENSIONS = {'jpg', 'jpeg'}
+    ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
 
     # SQL configurations
     SQLALCHEMY_DATABASE_URI = os.environ.get(

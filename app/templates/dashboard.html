@@ -40,9 +40,16 @@
             {% for post in posts %}
             <div class="blog-card">
                 <h3>{{ post.title }}</h3>
-                <p>By {{ post.userid.username }} | Posted on {{ post.timestamp }}</p>
+                <p>By {{ post.user.username }} | Posted on {{ post.timestamp }}</p>
                 <br>
-                <p>{{ post.content }}</p>
+                <p><b>Image</b><br>
+                <img src="{{ url_for('serve_image', image_id=post.id) }}" height="300" width="300">
+            <img src="{{ url_for('serve_analysed_image', image_id=post.id) }}" height="300" width="300"></p>
+                <br>
+                <p><b>Location:</b> {{ post.location }}</p>
+                <br>
+                <p><b>Description</b><br>
+                    {{ post.content }}</p>
                 <a class="button" href="#">Comment</a>
             </div>
             {% endfor %}

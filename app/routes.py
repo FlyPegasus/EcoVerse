@@ -1,5 +1,5 @@
 from app import app
-from flask import Flask, render_template, request, url_for, flash, redirect
+from flask import Flask, render_template, request, url_for, flash, redirect, Response
 from flask_login import current_user, login_required, login_user, logout_user
 from app.forms import LoginForm, SignUpForm, PostForm
 from app.models import User, Post
@@ -8,17 +8,46 @@ import cv2
 import plastic_detector
 from werkzeug.urls import url_parse
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import desc
 from app import db
+from utils.garbage_analyser import garbage_analyser
 
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
 
+@app.route('/image/<int:image_id>')
+def serve_image(image_id):
+    image = Post.query.get(image_id)
+    if image:
+        # Adjust mimetype if needed
+        return Response(image.image, mimetype='image/jpeg')
+    else:
+        return "Image not found", 404
+
+
+@app.route('/analysed_image/<int:image_id>')
+def serve_analysed_image(image_id):
+    image = Post.query.get(image_id)
+    if image:
+        # Adjust mimetype if needed
+        return Response(image.analysed_img, mimetype='image/jpeg')
+    else:
+        return "Image not found", 404
+
+
+@app.route('/image/<img_path>')
+def serve_plastic_img(img_path):
+    img = cv2.imread(img_path)
+    # mimetype = ['image/jpeg', 'image/jpg', 'image/png']
+    return Response(img, mimetype='image/jpg;image/png;image/jpeg')
+
+
 @app.route('/')
 @app.route('/dashboard')
 def dashboard():
-    all_posts = Post.query.all()
+    all_posts = Post.query.order_by(desc(Post.pollution_percent)).all()
     all_users = User.query.all()
     return render_template('dashboard.html', posts=all_posts, users=all_users)
     # return render_template('dashboard.html')
@@ -37,6 +66,8 @@ def post_view():
         latitude = request.form.get('latitude')
         longitude = request.form.get('longitude')
         p_post.location = latitude + longitude  # location code needs changes
+        p_post.pollution_percent, p_post.analysed_img = garbage_analyser(
+            p_post.image)  # pollution percentage
         p_post.userid = current_user.id  # Link the blog post to the current user
         db.session.add(p_post)
         db.session.commit()
@@ -132,8 +163,9 @@ def plastic_view():
             image = plastic_detector.transform(file_path)
             cv2.imwrite(os.path.join(
                 app.config['PROCESSED_FOLDER'], 'detected_' + filename), image)
-            img_path = os.path.join(
-                app.config['PROCESSED_FOLDER'], 'detected_' + filename)
+            img_path = os.path.abspath(os.path.join(
+                app.config['PROCESSED_FOLDER'], 'detected_' + filename))
+            print(img_path)
             return render_template("plastic_detected.html", image_path=img_path)
         else:
             flash('File not supported!')
