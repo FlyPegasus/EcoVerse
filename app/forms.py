@@ -12,7 +12,7 @@ from wtforms.validators import DataRequired, Email
 
 class LoginForm(FlaskForm):
     username = StringField('username', validators=[DataRequired()])
-    password = StringField('password', validators=[DataRequired()])
+    password = PasswordField('password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('login')
 
@@ -20,7 +20,7 @@ class LoginForm(FlaskForm):
 class SignUpForm(FlaskForm):
     username = StringField('username', validators=[DataRequired()])
     email = EmailField('Email address', [DataRequired(), Email()])
-    password = StringField('password', validators=[DataRequired()])
+    password = PasswordField('password', validators=[DataRequired()])
     submit = SubmitField('signup')
 
 
