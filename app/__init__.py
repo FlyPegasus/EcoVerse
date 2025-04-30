@@ -19,4 +19,4 @@ login = LoginManager(app)
 login.login_view = 'login_view'
 
 # routes is imported below to avoid circular imports
-from app import models, userRoutes #routes, 
+from app import models, routes # ,userRoutes

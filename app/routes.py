@@ -94,7 +94,7 @@ def register_view():
             return redirect(url_for('register'))
         new_user = User(username=username, email=email)
         new_user.set_password(password=password)
-        db.session.add(new_user)
+        db.session.add(new_user)  # try catch
         db.session.commit()
 
         flash('Registration successful! Please log in.')
