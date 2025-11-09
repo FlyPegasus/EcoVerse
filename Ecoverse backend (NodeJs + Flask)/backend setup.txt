@@ -1,0 +1,6 @@
+npm init -y
+
+npm i express mongoose nodemon jsonwebtoken bcryptjs cookie-parser cors
+
+
+- In package.json add "type": "module"
